@@ -3,6 +3,7 @@ import {
   Image,
   ImageBackground,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
   View,
@@ -14,6 +15,7 @@ interface Header {
   onPressSearch: Function;
   showSearch?: boolean;
   text: string;
+  title?: string;
 }
 
 const styles: Record<string, object> = StyleSheet.create({
@@ -37,6 +39,7 @@ const styles: Record<string, object> = StyleSheet.create({
   input: {
     backgroundColor: 'white',
     borderWidth: 1,
+    color: 'black',
     paddingLeft: 10,
     height: 40
   },
@@ -44,6 +47,11 @@ const styles: Record<string, object> = StyleSheet.create({
     flex: 1,
     height: 50,
     justifyContent: 'center',
+  },
+  title: {
+    color: 'white',
+    fontFamily: 'TitilliumWeb-SemiBold',
+    fontSize: 24,
   }
 });
 
@@ -71,7 +79,8 @@ const Header: React.FC<Header> = ({
   onPressBack,
   onPressSearch,
   showSearch = false,
-  text
+  text,
+  title = ''
 }) => {
   const textInputRef = useRef();
 
@@ -108,9 +117,16 @@ const Header: React.FC<Header> = ({
               placeholder="Search"
               ref={textInputRef}
               onChangeText={(value: string) => onChangeText(value)}
+              onSubmitEditing={()=> textInputRef?.current.blur()}
               value={text}
             />
-          ) : null}
+          ) : (
+            <Text
+              style={styles.title}
+            >
+              {title}
+            </Text>
+          )}
       </View>
       <IconView
         onPress={onSearchPress}

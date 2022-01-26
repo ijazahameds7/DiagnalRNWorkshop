@@ -6,6 +6,9 @@ import Header from './components/Header';
 import getApiData from './libs/GetApiData';
 
 const styles: Record<string, object> = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   flatList: {
     backgroundColor: 'black',
     flexDirection: 'row',
@@ -21,30 +24,43 @@ const styles: Record<string, object> = StyleSheet.create({
 const Home: React.FC<{}> = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
   const [text, onChangeText] = useState('');
+  const [title, setTitle] = useState('');
 
   useEffect(() => {
     const apiData: any = getApiData(currentPage);
-    if (apiData) setData([...data, ...apiData.page['content-items'].content]);
+    if (apiData) {
+      setData([...data, ...apiData.page['content-items'].content]);
+      setTitle(apiData.page['title'])
+    }
   }, [currentPage]);
 
+  useEffect(() => {
+    const updatedData = data.filter(
+      (el: Record<string, string>) => el.name.toLowerCase().indexOf(
+        text.toLowerCase()
+      ) !== -1
+    );
+    setFilteredData(updatedData);
+  }, [data, text]);
+
   return (
-    <View>
+    <View
+      style={styles.container}
+    >
       <Header
         onChangeText={(value: string) => onChangeText(value)}
         onPressBack={() => setShowSearch(false)}
         onPressSearch={() => setShowSearch(true)}
         showSearch={showSearch}
         text={text}
+        title={title}
       />
       <FlatList
         contentContainerStyle={styles.flatListContainer}
-        data={data.filter(
-          (el: Record<string, string>) => el.name.toLowerCase().indexOf(
-            text.toLowerCase()
-          ) !== -1
-        )}
+        data={filteredData}
         keyExtractor={(item: Record<string, string>) => item.id}
         numColumns={3}
         onEndReached={() => setCurrentPage(currentPage + 1)}
