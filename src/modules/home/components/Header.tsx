@@ -58,11 +58,14 @@ const styles: Record<string, object> = StyleSheet.create({
 const IconView: React.FC<{
   onPress: Function;
   source: number;
+  touchDisabled?: boolean;
 }> = ({
   onPress,
   source,
+  touchDisabled
 }) => (
     <TouchableOpacity
+      disabled={touchDisabled}
       onPress={onPress}
       style={styles.iconWrapper}
     >
@@ -106,6 +109,7 @@ const Header: React.FC<Header> = ({
       <IconView
         onPress={onGoBack}
         source={require('../../../assets/icons/Back.png')}
+        touchDisabled={!showSearch}
       />
       <View
         style={styles.inputContainer}
@@ -117,7 +121,7 @@ const Header: React.FC<Header> = ({
               placeholder="Search"
               ref={textInputRef}
               onChangeText={(value: string) => onChangeText(value)}
-              onSubmitEditing={()=> textInputRef?.current.blur()}
+              onSubmitEditing={() => textInputRef?.current.blur()}
               value={text}
             />
           ) : (
