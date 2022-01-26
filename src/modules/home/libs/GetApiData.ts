@@ -1,4 +1,4 @@
-const getApiData = (screenNumber): string => {
+const getApiData = (screenNumber: number): string => {
   switch (screenNumber) {
     case 1:
       return require('../../../constants/CONTENTLISTINGPAGE-PAGE1.json');

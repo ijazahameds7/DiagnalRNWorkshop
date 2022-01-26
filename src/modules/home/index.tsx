@@ -47,10 +47,8 @@ const Home: React.FC<{}> = () => {
         )}
         keyExtractor={(item: Record<string, string>) => item.id}
         numColumns={3}
-        style={styles.flatList}
-        showsVerticalScrollIndicator={false}
-        onEndReachedThreshold={0.6}
         onEndReached={() => setCurrentPage(currentPage + 1)}
+        onEndReachedThreshold={0.6}
         renderItem={({ item, index }) => (
           <Card
             image={item['poster-image']}
@@ -58,6 +56,8 @@ const Home: React.FC<{}> = () => {
             title={item.name}
           />
         )}
+        showsVerticalScrollIndicator={false}
+        style={styles.flatList}
       />
     </View>
   );
